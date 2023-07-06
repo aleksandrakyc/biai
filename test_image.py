@@ -73,6 +73,7 @@ def eval_image(path):
         class_name = class_names[index]
         print(class_name)
         print(id_to_plant_name[class_name])
+    return id_to_plant_name[class_name]
 
 if __name__ == '__main__':
 
