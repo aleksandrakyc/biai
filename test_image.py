@@ -33,6 +33,21 @@ image_datasets = {x: datasets.ImageFolder(os.path.join(data_dir, x),
                                           data_transforms[x])
                   for x in ['train', 'val']}
 class_names = image_datasets['train'].classes
+id_to_plant_name = {"1355936": "Cirsium arvense (L.) Scop.", 
+                    "1357330": "Calendula officinalis L.",
+                    "1358752": "Lamium purpureum L.",
+                    "1359517": "Trifolium pratense L.",
+                    "1359616": "Punica granatum L.",
+                    "1359620": "Alcea rosea L.",
+                    "1361824": "Lavandula angustifolia Mill.",
+                    "1363128": "Papaver rhoeas L.",
+                    "1363740": "Trifolium repens L.",
+                    "1363991": "Fragaria vesca L.",
+                    "1364099": "Centranthus ruber (L.) DC.",
+                    "1364164": "Lapsana communis L.",
+                    "1364173": "Lactuca serriola L.",
+                    "1394460": "Anemone nemorosa L.",
+                    "1394994": "Pyracantha coccinea M.Roem.",}
 
 MODEL_PATH = "ten_classes.pt"
 
@@ -57,6 +72,7 @@ def eval_image(path):
         index = output.data.cpu().numpy().argmax()
         class_name = class_names[index]
         print(class_name)
+        print(id_to_plant_name[class_name])
 
 if __name__ == '__main__':
 
