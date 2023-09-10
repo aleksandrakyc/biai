@@ -65,15 +65,18 @@ def eval_image(path):
     # input = Variable(image_tensor)
     img_normalized = img_normalized.to(device)
     # print(img_normalized.shape)
+
     with torch.no_grad():
         model_ft.eval()  
         output =model_ft(img_normalized)
+        probs = torch.nn.functional.softmax(output, dim=1)
         # print(output)
-        index = output.data.cpu().numpy().argmax()
-        class_name = class_names[index]
+        # index = output.data.cpu().numpy().argmax()
+        conf, classes = torch.max(probs, 1)
+        class_name = class_names[classes.item()]
         print(class_name)
         print(id_to_plant_name[class_name])
-    return id_to_plant_name[class_name]
+    return conf, id_to_plant_name[class_name]
 
 if __name__ == '__main__':
 

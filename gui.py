@@ -7,6 +7,8 @@ from test_image import eval_image
 
 FILE_PATH = ""
 PLANT_NAME = ""
+CONF = ""
+
 def open_file():
     file = filedialog.askopenfile(mode='r')
     if file is not None:
@@ -20,11 +22,15 @@ def open_file():
 def run_model():
     print(FILE_PATH)
     global PLANT_NAME
-    PLANT_NAME = eval_image(FILE_PATH)
-    label.configure(text=f"Prediction: {PLANT_NAME}")
+    conf, PLANT_NAME = eval_image(FILE_PATH)
+    print(conf)
+    global CONF
+    CONF = (int(conf[0].item() * 1000) / 1000.0 ) * 100
+    print(CONF)
+    label_pred.configure(text=f"Prediction: {PLANT_NAME}")
+    label_conf.configure(text=f"Confidence: {CONF}%")
     app.clipboard_clear()
     app.clipboard_append(PLANT_NAME)
-
 
 
 customtkinter.set_appearance_mode("light")  # Modes: system (default), light, dark
@@ -43,13 +49,15 @@ button.grid(row=0, column=0, padx = 0, pady = 10)   # grid dynamically divides t
 button2.grid(row=0, column=1, padx = 0, pady = 10)
 
 bottom_frame = customtkinter.CTkFrame(master=fr, fg_color="pink", height=600, width=800)
-bottom_frame.grid(row=1, columnspan =2, padx = 0, pady = 0)
+bottom_frame.grid(row=1, columnspan =3, padx = 0, pady = 0)
 label_image = customtkinter.CTkLabel(master=bottom_frame, width=760, height=500, fg_color='pink', text='')
 
-label = customtkinter.CTkLabel(master=bottom_frame, text=f"Prediction: {PLANT_NAME}", fg_color="transparent", font=("Lato", 25))
+label_pred = customtkinter.CTkLabel(master=bottom_frame, text=f"", fg_color="transparent", font=("Lato", 25))
+label_conf = customtkinter.CTkLabel(master=bottom_frame, text=f"", fg_color="transparent", font=("Lato", 25))
 
 label_image.grid(column=0, row=0, padx = 20, pady = 5)
-label.grid(column=0, row=1, padx = 20, pady = 10)
+label_pred.grid(column=0, row=1, padx = 20, pady = 5)
+label_conf.grid(column=0, row=2, padx = 20, pady = 10)
 
 
 app.mainloop()
